@@ -1,0 +1,54 @@
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+
+# Sistema operativo e IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+coverage/
+*.coverage
+*.trx
+
+# Node / React Native
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.metro-health-check*
+*.tsbuildinfo
+
+# Android
+mobile/android/.gradle/
+mobile/android/app/build/
+mobile/android/build/
+mobile/android/local.properties
+mobile/android/.cxx/
+*.keystore
+!debug.keystore
+*.apk
+*.aab
+
+# iOS
+mobile/ios/Pods/
+mobile/ios/build/
+mobile/ios/*.xcworkspace/xcuserdata/
+mobile/ios/*.xcodeproj/xcuserdata/
+mobile/ios/.xcode.env.local
+mobile/vendor/bundle/
+.bundle/
+
+# Enunciado del reto (material de referencia, no forma parte de la entrega)
+Reto T*cnico*.pdf

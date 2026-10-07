@@ -1,0 +1,14 @@
+# Normaliza los finales de línea para que el repositorio se comporte igual
+# en Windows, macOS y Linux.
+* text=auto eol=lf
+
+# Los scripts de Windows necesitan CRLF para ejecutarse.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jar binary
+*.keystore binary
+*.ttf binary
