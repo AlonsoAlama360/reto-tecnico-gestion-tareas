@@ -154,6 +154,26 @@ Los errores siguen el formato *Problem Details* (RFC 9457):
 | 503    | La base de datos no está disponible; se puede reintentar |
 | 500    | Error inesperado; el detalle queda solo en el log  |
 
+### Tests
+
+```bash
+cd backend
+dotnet test
+```
+
+No necesitan base de datos ni configuración.
+
+| Proyecto                 | Qué cubre                                                        |
+| ------------------------ | ---------------------------------------------------------------- |
+| `TaskManager.UnitTests`  | Invariantes de la entidad, casos de uso y cálculo de paginación  |
+| `TaskManager.Api.Tests`  | Contrato HTTP: levanta la API en memoria y sustituye el repositorio |
+
+Los tests de la API ejercitan el pipeline real (enrutado, validación,
+serialización y manejo de errores), así que comprueban lo que recibe la app:
+nombres de campos, enums por nombre, códigos de estado y que un fallo interno
+no filtra detalles. El repositorio con Dapper no tiene tests automáticos:
+necesitaría una base de datos real y se verificó a mano contra SQL Server.
+
 ### Estructura
 
 ```
