@@ -54,7 +54,8 @@ BEGIN
     WHERE (@Status IS NULL OR Status = @Status)
       AND (@Priority IS NULL OR Priority = @Priority)
     ORDER BY CreatedAt DESC, Id DESC
-    OFFSET (@PageNumber - 1) * @PageSize ROWS
+    -- BIGINT evita el desbordamiento aritmético con números de página muy altos.
+    OFFSET (CAST(@PageNumber AS BIGINT) - 1) * @PageSize ROWS
     FETCH NEXT @PageSize ROWS ONLY
     OPTION (RECOMPILE);
 END
