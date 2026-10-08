@@ -187,6 +187,78 @@ backend/src/
 Las dependencias apuntan hacia adentro: `Api` e `Infrastructure` conocen a
 `Application`, y esta solo a `Domain`.
 
+## App móvil
+
+Requiere Node 22 o superior y el entorno de Android para React Native
+(Android Studio con un dispositivo virtual, JDK 17 y la variable
+`ANDROID_HOME`). La guía oficial detalla la instalación:
+<https://reactnative.dev/docs/set-up-your-environment>.
+
+### Ejecución
+
+Con la API en marcha y un emulador abierto:
+
+```bash
+cd mobile
+npm install
+npm start          # Metro, en una terminal
+npm run android    # compila e instala la app, en otra terminal
+```
+
+La primera compilación descarga Gradle, el NDK y las dependencias nativas, y
+tarda varios minutos.
+
+### Conexión con la API
+
+La URL base está en `mobile/src/shared/config/env.ts`. En el emulador de
+Android se usa `http://10.0.2.2:5080`, que es el alias del equipo anfitrión:
+dentro del emulador, `localhost` es el propio emulador. No hay que configurar
+nada si la API corre en el puerto 5080 del mismo equipo.
+
+Para un dispositivo físico hay que poner ahí la IP del equipo en la red local
+y arrancar la API escuchando en esa interfaz
+(`dotnet run --project src/TaskManager.Api --urls http://0.0.0.0:5080`).
+
+### Pantallas
+
+| Pantalla | Qué hace |
+| -------- | -------- |
+| Mis tareas | Listado paginado con scroll infinito y "tirar para actualizar". Muestra el total y los filtros activos, que se pueden quitar uno a uno. |
+| Filtrar tareas | Selección de estado y prioridad. Los cambios se aplican al pulsar "Aplicar"; salir los descarta. |
+| Detalle | Título, estado, prioridad, descripción y fecha de creación. |
+
+Cada pantalla cubre sus estados de carga, vacío, sin resultados y error con
+reintento. Un detalle que ya no existe ofrece volver al listado en lugar de
+reintentar.
+
+### Estructura
+
+```
+mobile/src/
+├── app/                 Composición: proveedores y navegador raíz.
+├── features/
+│   └── tasks/           Todo lo relativo a tareas.
+│       ├── api/         Llamadas a la API y claves de caché.
+│       ├── hooks/       Acceso a datos con React Query.
+│       ├── model/       Tipos del dominio y su presentación (textos, colores).
+│       ├── navigation/  Rutas que aporta la feature.
+│       ├── components/  Componentes propios de la feature.
+│       └── screens/     Pantallas.
+└── shared/              Reutilizable por cualquier feature.
+    ├── api/             Cliente HTTP y clasificación de errores.
+    ├── components/      Componentes base (texto, botón, chip, etiqueta, estados).
+    ├── config/          Configuración de entorno.
+    ├── theme/           Tokens de diseño: color, espaciado, tipografía.
+    └── utils/
+```
+
+El código se organiza por feature y no por tipo de archivo: añadir una
+funcionalidad nueva es añadir una carpeta en `features/`, sin tocar las demás.
+Las dependencias van en un solo sentido: `app` → `features` → `shared`.
+
+No se usa ninguna librería de componentes: la interfaz se construye con los
+primitivos de React Native sobre los tokens de `shared/theme`.
+
 ## Alcance
 
 Incluido: listar, filtrar y ver el detalle de tareas.
