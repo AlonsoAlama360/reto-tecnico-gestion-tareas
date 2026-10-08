@@ -14,6 +14,20 @@ almacenados.
 | Acceso a datos | Dapper sobre procedimientos almacenados |
 | Base de datos | SQL Server                              |
 
+## Puesta en marcha
+
+Tres pasos, cada uno detallado en su sección:
+
+1. **[Base de datos](#base-de-datos):** ejecutar los tres scripts de
+   `database/`, con Docker o sobre un SQL Server ya instalado.
+2. **[Backend](#backend):** configurar la cadena de conexión y arrancar la API
+   en `http://localhost:5080`.
+3. **[App móvil](#app-móvil):** con un emulador de Android abierto,
+   `npm install`, `npm start` y `npm run android`.
+
+Para comprobar la solución sin levantar nada: `dotnet test` en `backend/` y
+`npm test` en `mobile/`.
+
 ## Documentación técnica
 
 | Documento | Contenido |
