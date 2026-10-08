@@ -21,7 +21,9 @@ internal sealed class GlobalExceptionHandler(
         CancellationToken cancellationToken)
     {
         // Si el cliente abandonó la petición no hay a quién responder ni nada que registrar como error.
-        if (exception is OperationCanceledException && httpContext.RequestAborted.IsCancellationRequested)
+        // No se mira el tipo de la excepción: al cancelar una consulta en curso, el proveedor de
+        // SQL Server puede lanzar una SqlException en lugar de OperationCanceledException.
+        if (httpContext.RequestAborted.IsCancellationRequested)
         {
             httpContext.Response.StatusCode = StatusClientClosedRequest;
             return true;
