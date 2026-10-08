@@ -219,6 +219,26 @@ Para un dispositivo físico hay que poner ahí la IP del equipo en la red local
 y arrancar la API escuchando en esa interfaz
 (`dotnet run --project src/TaskManager.Api --urls http://0.0.0.0:5080`).
 
+### Tests
+
+```bash
+cd mobile
+npm test
+```
+
+No necesitan emulador ni la API en marcha. La primera ejecución tarda más
+porque Jest compila React Native sin caché.
+
+| Qué se prueba | Cómo |
+| ------------- | ---- |
+| Pantallas de listado, filtros y detalle | Se renderizan con la capa de API sustituida y se comprueba lo que ve la persona: carga, vacío, sin resultados, errores con reintento, paginación y navegación |
+| Cliente HTTP | Construcción de la URL, y clasificación de fallos de red, timeout, estado HTTP y formato |
+| Utilidades | Clasificación de errores, mensajes y formato de fecha |
+
+Las pantallas reciben la navegación por props, así que se prueban sin montar
+un navegador. Además de `npm test`, `npm run lint` y `npx tsc --noEmit`
+comprueban estilo y tipos.
+
 ### Pantallas
 
 | Pantalla | Qué hace |
