@@ -10,9 +10,17 @@ almacenados.
 | Capa          | Tecnología                              |
 | ------------- | --------------------------------------- |
 | App móvil     | React Native (CLI) + TypeScript         |
-| API           | .NET (Web API), Clean Architecture      |
+| API           | .NET 10 (Web API), Clean Architecture   |
 | Acceso a datos | Dapper sobre procedimientos almacenados |
 | Base de datos | SQL Server                              |
+
+## Documentación técnica
+
+| Documento | Contenido |
+| --------- | --------- |
+| [Arquitectura](docs/arquitectura.md) | Diagrama de arquitectura del backend, diagramas de comunicación app ↔ API ↔ base de datos, arquitectura de la app y modelo de datos |
+| [Decisiones técnicas](docs/decisiones.md) | Qué se eligió en cada punto, por qué, qué alternativa se descartó y qué coste tiene |
+| [Escalabilidad, seguridad y casos límite](docs/escalabilidad-y-seguridad.md) | Qué está resuelto, qué falta para producción y cómo responde la solución ante casos poco habituales |
 
 ## Estructura del repositorio
 
