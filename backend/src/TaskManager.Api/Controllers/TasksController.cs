@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Api.Contracts;
 using TaskManager.Application.Common;
@@ -6,17 +7,19 @@ using TaskManager.Application.Tasks.GetTasks;
 
 namespace TaskManager.Api.Controllers;
 
+// El tipo de contenido se declara por respuesta y no con [Produces] en la clase:
+// ese atributo fuerza application/json también en los errores, que deben salir
+// como application/problem+json.
 [ApiController]
 [Route("api/v1/tasks")]
-[Produces("application/json")]
 public sealed class TasksController(
     GetTasksQueryHandler getTasks,
     GetTaskByIdQueryHandler getTaskById) : ControllerBase
 {
     /// <summary>Lista tareas, de la más reciente a la más antigua.</summary>
     [HttpGet]
-    [ProducesResponseType<PagedResult<TaskSummaryDto>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<PagedResult<TaskSummaryDto>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
     public async Task<ActionResult<PagedResult<TaskSummaryDto>>> GetTasks(
         [FromQuery] GetTasksRequest request,
         CancellationToken cancellationToken)
@@ -28,8 +31,8 @@ public sealed class TasksController(
 
     /// <summary>Devuelve el detalle de una tarea.</summary>
     [HttpGet("{id:int}")]
-    [ProducesResponseType<TaskDetailDto>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<TaskDetailDto>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public async Task<ActionResult<TaskDetailDto>> GetTaskById(int id, CancellationToken cancellationToken)
     {
         var task = await getTaskById.HandleAsync(id, cancellationToken);
